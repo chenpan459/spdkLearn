@@ -293,8 +293,11 @@ COMMON_CFLAGS += -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2
 endif
 
 ifeq ($(CONFIG_COVERAGE), y)
-COMMON_CFLAGS += --coverage -fprofile-update=atomic
+COMMON_CFLAGS += -fprofile-arcs -ftest-coverage
+LDFLAGS += -fprofile-arcs -ftest-coverage
+ifeq ($(OS),FreeBSD)
 LDFLAGS += --coverage
+endif
 endif
 
 ifeq ($(OS),Windows)

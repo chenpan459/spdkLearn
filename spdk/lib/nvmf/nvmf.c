@@ -505,16 +505,6 @@ spdk_nvmf_set_custom_discovery_filter(spdk_nvmf_custom_discovery_filter filter)
 	g_custom_discovery_filter = filter;
 }
 
-static void
-nvmf_target_opts_copy(struct spdk_nvmf_target_opts *opts,
-		      const struct spdk_nvmf_target_opts *opts_src, size_t opts_size)
-{
-	assert(opts);
-	assert(opts_src);
-
-	memcpy(opts, opts_src, spdk_min(opts_size, sizeof(*opts)));
-}
-
 struct spdk_nvmf_tgt *
 spdk_nvmf_tgt_create(struct spdk_nvmf_target_opts *_opts)
 {
@@ -524,7 +514,7 @@ spdk_nvmf_tgt_create(struct spdk_nvmf_target_opts *_opts)
 		.discovery_filter = SPDK_NVMF_TGT_DISCOVERY_MATCH_ANY,
 	};
 
-	nvmf_target_opts_copy(&opts, _opts, _opts->size);
+	memcpy(&opts, _opts, _opts->size);
 	if (strnlen(opts.name, NVMF_TGT_NAME_MAX_LENGTH) == NVMF_TGT_NAME_MAX_LENGTH) {
 		SPDK_ERRLOG("Provided target name exceeds the max length of %u.\n", NVMF_TGT_NAME_MAX_LENGTH);
 		return NULL;
@@ -2132,7 +2122,6 @@ spdk_nvmf_poll_group_dump_stat(struct spdk_nvmf_poll_group *group, struct spdk_j
 	spdk_json_write_named_uint32(w, "io_qpairs", group->stat.io_qpairs);
 	spdk_json_write_named_uint32(w, "current_admin_qpairs", group->stat.current_admin_qpairs);
 	spdk_json_write_named_uint32(w, "current_io_qpairs", group->stat.current_io_qpairs);
-	spdk_json_write_named_uint32(w, "current_unassociated_qpairs", group->current_unassociated_qpairs);
 	spdk_json_write_named_uint64(w, "pending_bdev_io", group->stat.pending_bdev_io);
 	spdk_json_write_named_uint64(w, "completed_nvme_io", group->stat.completed_nvme_io);
 
