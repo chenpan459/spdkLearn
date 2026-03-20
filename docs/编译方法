@@ -1,0 +1,11 @@
+
+
+1、拉 submodule
+git submodule update --init --recursive
+
+
+
+2、编译
+./scripts/pkgdep.sh     # 安装依赖
+./configure
+make -j$(nproc)
