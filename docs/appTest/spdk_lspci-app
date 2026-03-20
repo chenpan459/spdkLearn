@@ -1,0 +1,34 @@
+
+## 1️⃣ 配置 hugepage（最关键）
+echo 1024 > /proc/sys/vm/nr_hugepages
+
+或者更稳：
+echo 2048 > /proc/sys/vm/nr_hugepages
+
+
+
+
+## 2️⃣ 验证 hugepage
+grep Huge /proc/meminfo
+你应该看到：
+HugePages_Total: 1024
+HugePages_Free: 1024
+Hugepagesize: 2048 kB
+
+
+
+
+## 3️⃣ 绑定 SPDK 环境（必须）
+进入 SPDK 目录：
+cd /home/work2/spdkLearn/spdk
+执行：
+sudo ./scripts/setup.sh
+
+👉 它会做：
+* hugepage setup
+* vfio/uio 绑定（如果有设备）
+
+
+## 4️⃣ 再运行 spdk_lspci
+sudo ./build/bin/spdk_lspci
+

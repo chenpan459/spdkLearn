@@ -9,3 +9,13 @@ git submodule update --init --recursive
 ./scripts/pkgdep.sh     # 安装依赖
 ./configure
 make -j$(nproc)
+
+
+1. 查看设备
+lspci
+在虚拟机中你可能看到：
+VirtIO block
+或没有 NVMe
+
+2. 使用 SPDK 脚本绑定
+sudo ./scripts/setup.sh
